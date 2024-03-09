@@ -4,15 +4,16 @@ const path = require('path')
 const puppeteer = require('puppeteer');
 
 
-exports.renderPdf = async (isVisible, NAME) => {
+exports.renderPdf = async (NAME, isDebit, isCash, isCheque, branch, Date, address, isShared, isRemitter, isBeneficiary, isKyc) => {
     return new Promise(async(resolve, reject) => {
         try {
-                console.log('html maker called, ',isVisible, NAME )
+                const date = Date.replaceAll("/", " / ");
+                console.log('html maker called, ', NAME, isDebit, isCash, isCheque, branch, date, address, isShared, isRemitter, isBeneficiary, isKyc )
                 const filePath = path.join(path.resolve(), '/assets/template/template.hbs')
 
                 const html = await fs.readFileSync(filePath, "utf-8")
                 
-                const compiledTemplate = hbs.compile(html)({isVisible, NAME})
+                const compiledTemplate = hbs.compile(html)({NAME, isDebit, isCash, isCheque, branch, date, address, isShared, isRemitter, isBeneficiary, isKyc})
                 fs.writeFileSync('assets/final_template.html', compiledTemplate);
 
                 const browser = await puppeteer.launch();

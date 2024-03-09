@@ -11,9 +11,8 @@ app.get('/healthCheck', async(req, res) => {
 app.post('/renderPdf', async(req, res) => {
     try {
         console.log('renderPdf api called')
-        const isVisible=req.body.isVisible
-        const NAME = req.body.name
-        const pdf = await renderPdf(isVisible, NAME)
+        const { name, isDebit, isCash, isCheque, branch, date, address, isShared, isRemitter, isBeneficiary, isKyc } = req.body
+        const pdf = await renderPdf(name, isDebit, isCash, isCheque, branch, date, address, isShared, isRemitter, isBeneficiary, isKyc)
 
         console.log('after pdfMaker')
         var file = fs.createReadStream('output.pdf');
@@ -21,7 +20,7 @@ app.post('/renderPdf', async(req, res) => {
         res.setHeader('Content-Length', stat.size);
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', 'attachment; filename=quote.pdf');
-        file.pipe(res);
+        return file.pipe(res);
     } catch (err) {
         const message = err.message ? err.message : 'something went wrong'
         res.status(400).send({success: false, message: message})
