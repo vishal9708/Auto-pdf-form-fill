@@ -11,8 +11,8 @@ app.get('/healthCheck', async(req, res) => {
 app.post('/renderPdf', async(req, res) => {
     try {
         console.log('renderPdf api called')
-        const { name, isDebit, isCash, isCheque, branch, date, address, isShared, isRemitter, isBeneficiary, isKyc } = req.body
-        const pdf = await renderPdf(name, isDebit, isCash, isCheque, branch, date, address, isShared, isRemitter, isBeneficiary, isKyc)
+        const { isDebit, isCash, isCheque, branch, date, isShared, isRemitter, isBeneficiary, isKyc, accountNo, passportNo, serialNo, fundSource, amountInWords, transferCurrency, orderingCustomer, beneficiaryCustomer, beneficiaryBank } = req.body
+        const pdf = await renderPdf(isDebit, isCash, isCheque, branch, date, isShared, isRemitter, isBeneficiary, isKyc, accountNo, passportNo, serialNo, fundSource, amountInWords, transferCurrency, orderingCustomer, beneficiaryCustomer, beneficiaryBank)
 
         console.log('after pdfMaker')
         var file = fs.createReadStream('output.pdf');
