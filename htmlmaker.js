@@ -4,7 +4,7 @@ const path = require('path')
 const puppeteer = require('puppeteer');
 
 
-exports.renderPdf = async (isDebit, isCash, isCheque, branch, date, isShared, isRemitter, isBeneficiary, isKyc, accountNo, passportNo, serialNo, fundSource, amountInWords, transferCurrency, orderingCustomer, beneficiaryCustomer, beneficiaryBank) => {
+exports.renderPdf = async (isDebit, isCash, isCheque, branch, date, isShared, isRemitter, isBeneficiary, isKyc, accountNo, passportNo, serialNo, fundSource, amountInWords, transferCurrency, amount, orderingCustomer, beneficiaryCustomer, beneficiaryBank) => {
     return new Promise(async(resolve, reject) => {
         try {
                 // const date = Date.replaceAll("/", " / ");
@@ -22,12 +22,12 @@ exports.renderPdf = async (isDebit, isCash, isCheque, branch, date, isShared, is
                 const benBankCity = beneficiaryBank.city
                 const benBankPaymentType = beneficiaryBank.paymentType
                 const benBankPermitNo = beneficiaryBank.permitNo
-                console.log('html maker called, ',  isDebit, isCash, isCheque, branch, date, isShared, isRemitter, isBeneficiary, isKyc, accountNo, passportNo, serialNo, fundSource, amountInWords, transferCurrency, orderingCustomer, beneficiaryCustomer, beneficiaryBank )
+                console.log('html maker called, ',  isDebit, isCash, isCheque, branch, date, isShared, isRemitter, isBeneficiary, isKyc, accountNo, passportNo, serialNo, fundSource, amountInWords, transferCurrency, amount, orderingCustomer, beneficiaryCustomer, beneficiaryBank )
                 const filePath = path.join(path.resolve(), '/assets/template/template.hbs')
 
                 const html = await fs.readFileSync(filePath, "utf-8")
                 
-                const compiledTemplate = hbs.compile(html)({isDebit, isCash, isCheque, branch, date, isShared, isRemitter, isBeneficiary, isKyc, accountNo, passportNo, serialNo, fundSource, amountInWords, transferCurrency, ordCustName, ordCustAddress, 
+                const compiledTemplate = hbs.compile(html)({isDebit, isCash, isCheque, branch, date, isShared, isRemitter, isBeneficiary, isKyc, accountNo, passportNo, serialNo, fundSource, amountInWords, transferCurrency, amount, ordCustName, ordCustAddress, 
                                                             ordCustCity, benCustName, benCustAddress, benCustCity, benBankAccountNo, benBankSwiftCode, benBankAddress, benBankClearingCode, benBankName, benBankCity, benBankPaymentType, benBankPermitNo})
                 fs.writeFileSync('assets/final_template.html', compiledTemplate);
 
